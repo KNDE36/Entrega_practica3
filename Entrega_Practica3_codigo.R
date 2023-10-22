@@ -1,4 +1,5 @@
-##### Entrega Practica 3  #####
+##### Correccion de la Entrega Practica 3  #####
+
 
 
 rm(list = ls())
@@ -46,74 +47,62 @@ temp_rocio_chilecito<-celsius(chilecito)
 temp_rocio_iguazu<-celsius(iguazu)
 
 
-#Armo el array
-Estaciones<-array(list(),dim = c(5,9))
-colnames(Estaciones)<-c("Nombre","Latitud","Longitud","Altura","Codigo","Fecha","Temp","Temp Rocio","Presion")
+#Armo las listas de cada estacion bien ordenadas
+Aeroparque<-list("Codigo"=aeroparque[[1]][1],"Fecha"=aeroparque[[2]],"Nombre"=ubicacion[[1]][2],"Latitud"=ubicacion[[2]][2],"Longitud"=ubicacion[[3]][2],"Altura"=ubicacion[[4]][2],"Temp"=temp_aero,"Temp rocio"=temp_rocio_aero,"Presion"=aeroparque[[5]])
+Azul<-list("Codigo"=azul[[1]][1],"Fecha"=azul[[2]],"Nombre"=ubicacion[[1]][1],"Latitud"=ubicacion[[2]][1],"Longitud"=ubicacion[[3]][1],"Altura"=ubicacion[[4]][1],"Temp"=temp_azul,"Temp rocio"=temp_rocio_azul,"Presion"=azul[[5]])
+Catamarca<-list("Codigo"=catamarca[[1]][1],"Fecha"=catamarca[[2]],"Nombre"=ubicacion[[1]][3],"Latitud"=ubicacion[[2]][3],"Longitud"=ubicacion[[3]][3],"Altura"=ubicacion[[4]][3],"Temp"=temp_cata,"Temp rocio"=temp_rocio_cata,"Presion"=catamarca[[5]])
+Chilecito<-list("Codigo"=chilecito[[1]][1],"Fecha"=chilecito[[2]],"Nombre"=ubicacion[[1]][4],"Latitud"=ubicacion[[2]][4],"Longitud"=ubicacion[[3]][4],"Altura"=ubicacion[[4]][4],"Temp"=temp_chilecito,"Temp rocio"=temp_rocio_chilecito,"Presion"=chilecito[[5]])
+Iguazu<-list("Codigo"=iguazu[[1]][1],"Fecha"=iguazu[[2]],"Nombre"=ubicacion[[1]][5],"Latitud"=ubicacion[[2]][5],"Longitud"=ubicacion[[3]][5],"Altura"=ubicacion[[4]][5],"Temp"=temp_iguazu,"Temp rocio"=temp_rocio_iguazu,"Presion"=iguazu[[5]])
 
-#Armo las listas de cada estacion con todos los datos
-Aeroparque<-list(ubicacion[2,1],ubicacion[2,2],ubicacion[2,3],ubicacion[2,4],aeroparque[1,1],aeroparque[,2],temp_aero,temp_rocio_aero,aeroparque[,5])
-Azul<-list(ubicacion[1,1],ubicacion[1,2],ubicacion[1,3],ubicacion[1,4],azul[1,1],azul[,2],temp_azul,temp_rocio_azul,azul[,5])
-Catamarca<-list(ubicacion[3,1],ubicacion[3,2],ubicacion[3,3],ubicacion[3,4],catamarca[1,1],catamarca[,2],temp_cata,temp_rocio_cata,catamarca[,5])
-Chilecito<-list(ubicacion[4,1],ubicacion[4,2],ubicacion[4,3],ubicacion[4,4],chilecito[1,1],chilecito[,2],temp_chilecito,temp_rocio_chilecito,chilecito[,5])
-Iguazu<-list(ubicacion[5,1],ubicacion[5,2],ubicacion[5,3],ubicacion[5,4],iguazu[1,1],iguazu[,2],temp_iguazu,temp_rocio_iguazu,iguazu[,5])
-
-#Relleno el array con las listas de cada estacion
-Estaciones[1,]<-Aeroparque
-Estaciones[2,]<-Azul
-Estaciones[3,]<-Catamarca
-Estaciones[4,]<-Chilecito
-Estaciones[5,]<-Iguazu
-
+#Armo la lista de listas
+Estaciones<-list("Aeroparque"=Aeroparque,"Azul"=Azul,"Catamarca"=Catamarca,"Chilecito"=Chilecito,"Iguazu"=Iguazu)  #lista vacia
 
 
 #EJERCICIO 2)
 #item a)
 
-#Armo un array vacio para poder ir llenandolo por fila con las listas de los datos calculados para cada estacion
-resumen_estacion<-array(list(),dim=c(5,16))
-colnames(resumen_estacion)<-c("Nombre","Datos Totales","Fecha Inicial","Fecha Final","Temp Media","Desvio de Temp","Temp Minima","Temp Maxima","Temp de Rocio Media","Desvio de Temp de Rocio","Temp de Rocio Min","Temp de Rocio Max","Presion Media","Desvio de Presion","Presion Min","Presion Max")
+resumen<-function(lista) {
+  M<-matrix(0,nrow=16,ncol=5)
+  resumen_estacion<-data.frame(M,row.names = c("Nombre","Datos Totales","Fecha Inicial","Fecha Final","Temp Media","Desvio de Temp","Temp Minima","Temp Maxima","Temp de Rocio Media","Desvio de Temp de Rocio","Temp de Rocio Min","Temp de Rocio Max","Presion Media","Desvio de Presion","Presion Min","Presion Max"))
+  colnames(resumen_estacion)<-c("Aeroparque","Azul","Catamarca","Chilecito","Iguazu")
   
-resumen<-function(array) {
-  
-  for (i in 1:nrow(array)) {
-       total_datos<-length(array[[i,"Fecha"]])    
-       fecha1<-array[[i,"Fecha"]][1]
-       fecha2<-array[[i,"Fecha"]][total_datos]
-       temp_media<-mean(array[[i,"Temp"]],na.rm=T)
-       rocio_media<-mean(array[[i,"Temp Rocio"]],na.rm=T)
-       presion_media<-mean(array[[i,"Presion"]],na.rm=T)
-       desvio_temp<-sd(array[[i,"Temp"]],na.rm=T)
-       desvio_rocio<-sd(array[[i,"Temp Rocio"]],na.rm = T)
-       desvio_presion<-sd(array[[i,"Presion"]],na.rm=T)
-       max_temp<-max(array[[i,"Temp"]],na.rm=T)
-       max_rocio<-max(array[[i,"Temp Rocio"]],na.rm=T)
-       max_presion<-max(array[[i,"Presion"]],na.rm=T)
-       min_temp<-min(array[[i,"Temp"]],na.rm=T)
-       min_rocio<-min(array[[i,"Temp Rocio"]],na.rm=T)
-       min_presion<-min(array[[i,"Presion"]],na.rm=T)
-       nombre<-array[[i,"Nombre"]]
-       
-   resumen_estacion[i, ]=list(nombre,total_datos,fecha1,fecha2,temp_media,desvio_temp,min_temp,max_temp,rocio_media,desvio_rocio,min_rocio,max_rocio,presion_media,desvio_presion,min_presion,max_presion)
- }
+  for (i in 1:length(lista)) {
+    Tmedia<-mean(lista[[i]][["Temp"]],na.rm=T)
+    Desvio_T<-sd(lista[[i]][["Temp"]],na.rm=T)
+    min_T<-min(lista[[i]][["Temp"]],na.rm=T)
+    max_T<-max(lista[[i]][["Temp"]],na.rm=T)
+    TRmedia<-mean(lista[[i]][["Temp rocio"]],na.rm=T)
+    Desvio_TR<-sd(lista[[i]][["Temp rocio"]],na.rm=T)
+    min_TR<-min(lista[[i]][["Temp rocio"]],na.rm=T)
+    max_TR<-max(lista[[i]][["Temp rocio"]],na.rm=T)
+    P_media<-mean(lista[[i]][["Presion"]],na.rm=T)
+    Desvio_P<-sd(lista[[i]][["Presion"]],na.rm=T)
+    min_P<-min(lista[[i]][["Presion"]],na.rm=T)
+    max_P<-max(lista[[i]][["Presion"]],na.rm=T)
+    nombre<-lista[[i]][["Nombre"]]
+    total_datos<-length(lista[[i]][["Fecha"]])
+    Fecha1<-lista[[i]][["Fecha"]][1]
+    Fecha2<-lista[[i]][["Fecha"]][total_datos]
+    
+    resumen_estacion[,i]<-c(nombre,total_datos,Fecha1,Fecha2,Tmedia,Desvio_T,min_T,max_T,TRmedia,Desvio_TR,min_TR,max_TR,P_media,Desvio_P,min_P,max_P)
+  }
   return(resumen_estacion)
 }
 
-#Guardo en una variable el resumen y lo imprimo por pantalla el resumen
-#Podria no guardarlo en una variable y la funcion lo imprimiria directamente pero me parecio que lo mejor es que quede guardado en el Environment
-Resumen_Estaciones<-resumen(Estaciones)
-Resumen_Estaciones
+resumen(Estaciones)
+# se observan valores NA e Inf en estadisticos de chilecito pero es esperable ya que todos sus valores de Presion, son codigos faltantes,tomados como NA
 
 
-#Item b)
+#item b)
 
-regiones<-list()
-region<-function(array,lat_min,lat_max,long_min,long_max) { 
-  for (i in 1:nrow(array)) {
-    if(array[[i,"Latitud"]] > lat_min & 
-       array[[i,"Latitud"]] < lat_max &
-       array[[i,"Longitud"]] > long_min &
-       array[[i,"Longitud"]] < long_max )
-    regiones[i]<-array[[i,1]] 
+region<-function(lista,lat_min,lat_max,long_min,long_max) {
+  regiones<-c()
+  for (i in 1:length(lista)) {
+    if(lista[[i]][["Latitud"]] > lat_min & 
+       lista[[i]][["Latitud"]] < lat_max &
+       lista[[i]][["Longitud"]] > long_min &
+       lista[[i]][["Longitud"]] < long_max )
+      regiones[i]<-lista[[i]][["Nombre"]]
     else {
       print("No hay estaciones cercanas")
     }
@@ -121,17 +110,8 @@ region<-function(array,lat_min,lat_max,long_min,long_max) {
   return(regiones)
 }
 
-#Ingreso valores para probar si funciona correctamente
-#Aclaracion: no estaba segura exactamente de como pedia la consigna que devuelva el resultado de la funcion,por lo que hice dos formas 
-
-#Una forma de ver lo obtenido, abriendo las listas guardadas en las variables
-R1<-region(Estaciones,-30,-25,-70,-50)   #algunas estaciones no cumplen
-R2<-region(Estaciones,-40,0,-70,0)       #todas las estaciones cumplen
-
-#Otra forma,ver por pantalla directamente
-region(Estaciones,-30,-25,-70,-50)   
-region(Estaciones,-40,0,-70,0) 
-
+region(Estaciones,-30,-25,-70,-50) #algunas estaciones no cumplen
+region(Estaciones,-40,0,-70,0)     #todas las estaciones cumplen
 
 
 #item c)
