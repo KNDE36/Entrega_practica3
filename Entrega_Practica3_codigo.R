@@ -55,7 +55,7 @@ Chilecito<-list("Codigo"=chilecito[[1]][1],"Fecha"=chilecito[[2]],"Nombre"=ubica
 Iguazu<-list("Codigo"=iguazu[[1]][1],"Fecha"=iguazu[[2]],"Nombre"=ubicacion[[1]][5],"Latitud"=ubicacion[[2]][5],"Longitud"=ubicacion[[3]][5],"Altura"=ubicacion[[4]][5],"Temp"=temp_iguazu,"Temp rocio"=temp_rocio_iguazu,"Presion"=iguazu[[5]])
 
 #Armo la lista de listas
-Estaciones<-list("Aeroparque"=Aeroparque,"Azul"=Azul,"Catamarca"=Catamarca,"Chilecito"=Chilecito,"Iguazu"=Iguazu)  #lista vacia
+Estaciones<-list("Aeroparque"=Aeroparque,"Azul"=Azul,"Catamarca"=Catamarca,"Chilecito"=Chilecito,"Iguazu"=Iguazu)  
 
 
 #EJERCICIO 2)
